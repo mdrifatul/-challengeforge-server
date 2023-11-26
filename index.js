@@ -1,15 +1,18 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
 require('dotenv').config()
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
-const applyMiddleware = require('./src/middlewares/applymiddleware');
 const port = process.env.PORT || 5000;
 
 // middleware
-applyMiddleware(app)
+app.use(cors());
+app.use(express.json());
+
+
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(process.env.DB_URL, {
+const client = new MongoClient(process.env.DATABASE_LOCAL, {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
@@ -21,13 +24,19 @@ const client = new MongoClient(process.env.DB_URL, {
 
 async function run() {
   try {
-    const contestcollection = client.db('challengeforgeDB').collection('contest')
+    const contestcollection = client.db('challengeforgeDB').collection('contests')
     const userCollection = client.db('challengeforgeDB').collection('users')
+    const creatorCollection = client.db('challengeforgeDB').collection('creator')
 
     // contest api
     app.get('/contest', async(req, res) =>{
-      let sortObj = {}
+      let queryObj = {}
+      const tags = req.query.tags
+      if(tags){
+        queryObj.tags = tags
+      }
 
+      let sortObj = {}
       const sortField = req.query.sortField
       const sortOrder = req.query.sortOrder
 
@@ -35,10 +44,11 @@ async function run() {
         sortObj[sortField] = sortOrder
       }
 
-      const cursor =  contestcollection.find().sort(sortObj)
+      const cursor =  contestcollection.find(queryObj).sort(sortObj)
       const result = await cursor.toArray();
       res.send(result)
     })
+   
 
     app.get('/contest/:id', async(req, res) =>{
       const id = req.params.id
@@ -59,8 +69,40 @@ async function run() {
       res.send(result)
     })
 
+    app.get('/users',async(req, res) =>{
+      const result = await userCollection.find().toArray()
+      res.send(result)
+    })
 
+    app.delete('/users/:id', async(req, res) =>{
+      const id = req.params.id
+      const query = {_id: new ObjectId(id)}
+      const result = await userCollection.deleteOne(query)
+      res.send(result)
+    })
 
+    app.put('/users/admin/:id',async(req, res) =>{
+      const id = req.params.id
+      const user = req.body
+      console.log(user);
+      const filter = {_id: new ObjectId(id)}
+      const options = {upsert : true}
+      const updatedDoc = {
+        $set:{
+          ...user,
+          timestamp: Date.now(),
+        }
+      }
+      const result = await userCollection.updateOne(filter, updatedDoc,options)
+      res.send(result)
+    })
+
+    // contest creator api
+    app.get('/creator', async(req, res) =>{
+      const result = await creatorCollection.find().toArray()
+      res.send(result)
+    }) 
+  
 
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
