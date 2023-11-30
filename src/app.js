@@ -90,7 +90,7 @@ const verifyToken = (req, res, next) =>{
       const filter = {_id: new ObjectId(id)}
       const options = { upsert: true };
       const updateContest = req.body;
-      const food = {
+      const update = {
         $set: {
           name:updateContest.name,
           deadline:updateContest.deadline,
@@ -101,7 +101,7 @@ const verifyToken = (req, res, next) =>{
           status:updateContest.status
         },
       }
-      const result = await contestcollection.updateOne(filter,food,options)
+      const result = await contestcollection.updateOne(filter,update,options)
       console.log(result);
       res.send(result)
     })

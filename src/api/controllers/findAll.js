@@ -25,13 +25,13 @@ const findAll = async (req, res) =>{
       const limit = Number(req.query.limit)
       const skip = (page-1)* limit
 
-      // const cursor = await Contest.find(queryObj).skip(skip).limit(limit).sort(sortObj)
-      const cursor = await Contest.find(queryObj).sort(sortObj)
+      const cursor = await Contest.find(queryObj).skip(skip).limit(limit).sort(sortObj)
+      // const cursor = await Contest.find(queryObj).sort(sortObj)
       const result = cursor
 
-      // const total = await Contest.countDocuments()
-      // res.send({total, result})
-      res.send(result)
+      const total = await Contest.countDocuments()
+      res.send({total, result})
+      // res.send(result)
 
 }
 
