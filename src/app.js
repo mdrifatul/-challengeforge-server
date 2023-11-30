@@ -98,7 +98,8 @@ const verifyToken = (req, res, next) =>{
           prizemoney:updateContest.prizemoney, 
           tags:updateContest.tags, 
           instruction:updateContest.instruction,
-          status:updateContest.status
+          status:updateContest.status,
+          attempted:updateContest.attempted
         },
       }
       const result = await contestcollection.updateOne(filter,update,options)
