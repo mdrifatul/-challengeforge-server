@@ -5,13 +5,9 @@ const Contestschema = new Schema({
         type:String ,
         required: true
     },
-    'image':{
-        type:String ,
-        required: true
-    },
-    "attempted":{
-        type:Number,
-        required: true
+    "email":{
+        type:String,
+        required: true,
     },
     "description":{
         type:String ,
@@ -21,13 +17,13 @@ const Contestschema = new Schema({
         type:Number,
         required: false
     },
-    "deadline":{
-        type:String ,
-        required: false,
-    },
     "prizemoney":{
         type:Number,
         required: true
+    },
+    "deadline":{
+        type:String ,
+        required: false,
     },
     "tags":{
         type:String,
@@ -37,7 +33,14 @@ const Contestschema = new Schema({
         type:String,
         required: true
     },
-    
+    'image':{
+        type:String ,
+        required: true
+    },
+    "status":{
+        type:String,
+        required: true
+    }
 })
 
 const Contest = model('Contest', Contestschema)

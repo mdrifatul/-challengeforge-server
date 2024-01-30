@@ -8,7 +8,6 @@ const port = process.env.PORT || 5000;
 
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const middleware = require('./middlewares/middleware');
-const connectDB = require('./db/connectDB');
 const contestRouter = require('./routers/Contest/index')
 
 
@@ -65,47 +64,47 @@ const verifyToken = (req, res, next) =>{
       res.send("server is running....");
     });
 
-    app.get('/contest/:id', async(req, res) =>{
-      const id = req.params.id
-      const query = {_id: new ObjectId(id)}
-      const result = await contestcollection.findOne(query)
-      res.send(result)
-    })
+    // app.get('/contest/:id', async(req, res) =>{
+    //   const id = req.params.id
+    //   const query = {_id: new ObjectId(id)}
+    //   const result = await contestcollection.findOne(query)
+    //   res.send(result)
+    // })
 
-    app.post('/contest',async(req, res) =>{
-      const item = req.body
-      const result = await contestcollection.insertOne(item)      
-      res.send(result)
-    })
+    // app.post('/contest',async(req, res) =>{
+    //   const item = req.body
+    //   const result = await contestcollection.insertOne(item)      
+    //   res.send(result)
+    // })
 
-    app.delete('/contest/:id', async(req, res) =>{
-      const id = req.params.id
-      const query = {_id: new ObjectId(id)}
-      const result = await contestcollection.deleteOne(query)
-      res.send(result)
-    })
+    // app.delete('/contest/:id', async(req, res) =>{
+    //   const id = req.params.id
+    //   const query = {_id: new ObjectId(id)}
+    //   const result = await contestcollection.deleteOne(query)
+    //   res.send(result)
+    // })
 
-    app.patch('/contest/:id',async(req, res) =>{
-      const id = req.params.id
-      const filter = {_id: new ObjectId(id)}
-      const options = { upsert: true };
-      const updateContest = req.body;
-      const update = {
-        $set: {
-          name:updateContest.name,
-          deadline:updateContest.deadline,
-          contestprice:updateContest.contestprice, 
-          prizemoney:updateContest.prizemoney, 
-          tags:updateContest.tags, 
-          instruction:updateContest.instruction,
-          status:updateContest.status,
-          attempted:updateContest.attempted
-        },
-      }
-      const result = await contestcollection.updateOne(filter,update,options)
-      console.log(result);
-      res.send(result)
-    })
+    // app.patch('/contest/:id',async(req, res) =>{
+    //   const id = req.params.id
+    //   const filter = {_id: new ObjectId(id)}
+    //   const options = { upsert: true };
+    //   const updateContest = req.body;
+    //   const update = {
+    //     $set: {
+    //       name:updateContest.name,
+    //       deadline:updateContest.deadline,
+    //       contestprice:updateContest.contestprice, 
+    //       prizemoney:updateContest.prizemoney, 
+    //       tags:updateContest.tags, 
+    //       instruction:updateContest.instruction,
+    //       status:updateContest.status,
+    //       attempted:updateContest.attempted
+    //     },
+    //   }
+    //   const result = await contestcollection.updateOne(filter,update,options)
+    //   console.log(result);
+    //   res.send(result)
+    // })
     
 
     // user api
