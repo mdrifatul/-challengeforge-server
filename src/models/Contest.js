@@ -15,7 +15,7 @@ const Contestschema = new Schema({
     },
     "contestprice":{
         type:Number,
-        required: false
+        required: true
     },
     "prizemoney":{
         type:Number,
@@ -35,7 +35,7 @@ const Contestschema = new Schema({
     },
     'image':{
         type:String ,
-        required: true
+        required: false
     },
     "status":{
         type:String,

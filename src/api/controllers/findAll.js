@@ -1,7 +1,6 @@
 const Contest = require('../../models/Contest')
 
 const findAll = async (req, res) =>{
-
         let queryObj = {}
         const tags = req.query.tags
         const email = req.query.email

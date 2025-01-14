@@ -1,11 +1,27 @@
 const mongoose = require("mongoose");
 require("dotenv").config();
 
-const connectDB = async () => {
+const connectionString = () => {
 
-  await mongoose.connect(process.env.DATABASE_LOCAL, { dbName: process.env.DB_NAME });
-  console.log("connected to database");
-};
+    let connectionUri;
 
+    if (process.env.NODE_ENV === 'development') {
+        connectionUri = process.env.DATABASE_LOCAL
+        connectionUri = connectionUri.replace('<username>', process.env.DATABASE_LOCAL_USERNAME)
+        connectionUri = connectionUri.replace('<password>', process.env.DATABASE_LOCAL_PASSWORD)
+    } else {
+        connectionUri = process.env.DATABASE_PROD
+        connectionUri = connectionUri.replace('<username>', process.env.DATABASE_LOCAL_USERNAME)
+        connectionUri = connectionUri.replace('<password>', process.env.DATABASE_LOCAL_PASSWORD)
+    }
+    return connectionUri
+}
 
-module.exports= connectDB
+    const uri = connectionString()
+    
+    const connectDB = async () => {
+        await mongoose.connect(uri, { dbName: process.env.DB_NAME })
+    }
+
+module.exports = connectDB
+

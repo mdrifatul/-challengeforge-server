@@ -1,17 +1,20 @@
 const cors = require('cors');
 const express = require('express');
+const cookieParser = require('cookie-parser')
+const { LOCAL_CLIENT, NORMAL_CLIENT } = require('../config/default')
 
 
 const middleware = (app) => {
-  app.use(cors(
-    // {
-      // origin: [
-        // 'http://localhost:5173',
-        // 'https://challengeforge-7ce2b.web.app'
-      // ]
-    // }
-  ));
-  app.use(express.json());
+  app.use(cors({
+    origin: [
+        LOCAL_CLIENT,
+        NORMAL_CLIENT
+      ],
+      credentials: true
+  }))
+
+  app.use(express.json())
+  app.use(cookieParser())
 
   // app.use((req, res, next) => {
   //   // CORS headers
@@ -24,10 +27,9 @@ const middleware = (app) => {
   //       return res.status(200).end();
   //   }
 
-  //   return next();
+    // return next();
   // })
 };
 
 
-
-module.exports = middleware
+module.exports = {middleware}
